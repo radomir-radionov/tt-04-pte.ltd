@@ -11,8 +11,6 @@ services:
         fromDatabase:
           name: tt-04-digital-card-db
           property: connectionString
-      - key: PORT
-        value: 3000
 
 databases:
   - name: tt-04-digital-card-db
