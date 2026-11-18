@@ -77,5 +77,10 @@ Any platform with Docker or Node 20 + PostgreSQL (Render, Railway, Fly.io):
 
 ### Live API (Render)
 
-1. [Create a new Blueprint](https://dashboard.render.com/blueprints) and point it at this repo (`render.yaml` provisions Postgres + web service).
-2. After deploy, open `https://<your-service>.onrender.com/graphql` for Apollo Sandbox.
+**Option A — one command (API key):**
+
+1. [Create an API key](https://dashboard.render.com/u/settings#api-keys) (read/write).
+2. Run: `RENDER_API_KEY=rnd_xxx npm run deploy:render`
+3. Open the printed URL → `/graphql` (Apollo Sandbox).
+
+**Option B — Blueprint UI:** [New Blueprint](https://dashboard.render.com/blueprints) → repo `tt-04-pte.ltd` → apply `render.yaml`.
