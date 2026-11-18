@@ -2,16 +2,26 @@
 
 Backend digital visit card for **Radomir Radionov**: NestJS + TypeScript + Prisma + GraphQL (Apollo Sandbox) + PostgreSQL + Docker.
 
+## For reviewers
+
+|                  |                                                                        |
+| ---------------- | ---------------------------------------------------------------------- |
+| **Live API**     | https://tt-04-digital-card.vercel.app/graphql (Apollo Sandbox)         |
+| **Health**       | https://tt-04-digital-card.vercel.app/health                           |
+| **Repository**   | https://github.com/radomir-radionov/tt-04-pte.ltd                      |
+| **From zero**    | `docker compose up --build` → http://localhost:3000/graphql            |
+| **Architecture** | This file (table below) + [docs/architecture.md](docs/architecture.md) |
+
 ## Architecture decisions
 
-| Topic             | Choice                                           | Why                                                                        |
-| ----------------- | ------------------------------------------------ | -------------------------------------------------------------------------- |
-| Layers            | Resolver → Service → Repository → Prisma         | Keeps GraphQL thin; business rules testable without HTTP                   |
-| API style         | GraphQL code-first                               | Strong typing with NestJS decorators; schema generated to `src/schema.gql` |
-| Nested data       | Request-scoped **DataLoader** on field resolvers | Batches related rows by `profileId`; avoids N+1 when the graph grows       |
-| Bootstrap data    | `DatabaseSeedService` on module init if DB empty | Satisfies “zero install → filled DB” for Docker and local                  |
-| Migrations        | `prisma migrate deploy` in Docker entrypoint     | Reproducible schema before app start                                       |
-| Singleton profile | `slug = default`                                 | One public card; easy to extend later with `profile(slug: String)`         |
+| Topic             | Choice                                           | Why                                                                                          |
+| ----------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| Layers            | Resolver → Service → Repository → Prisma         | Keeps GraphQL thin; business rules testable without HTTP                                     |
+| API style         | GraphQL code-first                               | NestJS decorators; `autoSchemaFile: true` (in-memory schema — works on read-only serverless) |
+| Nested data       | Request-scoped **DataLoader** on field resolvers | Batches related rows by `profileId`; avoids N+1 when the graph grows                         |
+| Bootstrap data    | `DatabaseSeedService` on module init if DB empty | Satisfies “zero install → filled DB” for Docker and local                                    |
+| Migrations        | `prisma migrate deploy` in Docker entrypoint     | Reproducible schema before app start                                                         |
+| Singleton profile | `slug = default`                                 | One public card; easy to extend later with `profile(slug: String)`                           |
 
 See [docs/architecture.md](docs/architecture.md) for more detail.
 
@@ -25,6 +35,8 @@ docker compose up --build
 - Health: [http://localhost:3000/health](http://localhost:3000/health)
 
 On first start: migrations run, then the app seeds your profile if the database is empty.
+
+If **port 3000** is already in use on the host, change the `app` `ports` mapping (e.g. `3001:3000`) or stop the conflicting process. For local Prisma from the host, DB is published as **5434** (not 5432) to avoid clashing with a system Postgres.
 
 ## Example query
 
@@ -66,7 +78,7 @@ npm run start:dev
 ## Tests (TDD)
 
 ```bash
-export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/digital_card?schema=public"
+export DATABASE_URL="postgresql://postgres:postgres@localhost:5434/digital_card?schema=public"
 npm test
 npm run test:e2e
 ```

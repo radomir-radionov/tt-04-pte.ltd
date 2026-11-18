@@ -2,13 +2,13 @@
 
 ## Layers
 
-| Layer | Responsibility |
-|-------|----------------|
-| GraphQL resolvers | Map GraphQL operations to service calls; field resolvers use DataLoaders |
-| `ProfileService` | Application use cases (`getProfile`) |
-| `ProfileRepository` | Prisma queries and DTO mapping |
-| Prisma | Schema, migrations, seed |
-| `DatabaseSeedService` | Runs seed when no profile exists (cold start / Docker) |
+| Layer                 | Responsibility                                                           |
+| --------------------- | ------------------------------------------------------------------------ |
+| GraphQL resolvers     | Map GraphQL operations to service calls; field resolvers use DataLoaders |
+| `ProfileService`      | Application use cases (`getProfile`)                                     |
+| `ProfileRepository`   | Prisma queries and DTO mapping                                           |
+| Prisma                | Schema, migrations, seed                                                 |
+| `DatabaseSeedService` | Runs seed when no profile exists (cold start / Docker)                   |
 
 Resolvers do not import `PrismaClient` directly.
 
@@ -24,17 +24,29 @@ Relations: Profile 1—N for all child entities. `onDelete: Cascade` from profil
 
 ## GraphQL
 
-Code-first (`@nestjs/graphql` + Apollo). Root query:
+Code-first (`@nestjs/graphql` + Apollo). Schema is built in memory (`autoSchemaFile: true` in `src/graphql/graphql.module.ts`) so deploy targets without a writable filesystem (e.g. Vercel) do not need a checked-in `schema.gql`. Root query:
 
 ```graphql
 query {
   profile {
     name
     description
-    links { type url }
-    skills { name }
-    experience { company position achievements }
-    projects { name url }
+    links {
+      type
+      url
+    }
+    skills {
+      name
+    }
+    experience {
+      company
+      position
+      achievements
+    }
+    projects {
+      name
+      url
+    }
   }
 }
 ```
