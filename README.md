@@ -71,5 +71,11 @@ Any platform with Docker or Node 20 + PostgreSQL (Render, Railway, Fly.io):
 
 ## Links
 
-- GitHub: [radomir-radionov](https://github.com/radomir-radionov)
-- CV in repo: `Radomir_CV_React.pdf`
+- **Repository:** https://github.com/radomir-radionov/tt-04-pte.ltd
+- **Profile:** [GitHub @radomir-radionov](https://github.com/radomir-radionov)
+- **CV in repo:** `Radomir_CV_React.pdf`
+
+### Live API (Render)
+
+1. [Create a new Blueprint](https://dashboard.render.com/blueprints) and point it at this repo (`render.yaml` provisions Postgres + web service).
+2. After deploy, open `https://<your-service>.onrender.com/graphql` for Apollo Sandbox.
