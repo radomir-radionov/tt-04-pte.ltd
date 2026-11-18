@@ -6,7 +6,7 @@ Backend digital visit card for **Radomir Radionov**: NestJS + TypeScript + Prism
 
 |                  |                                                                        |
 | ---------------- | ---------------------------------------------------------------------- |
-| **Live API**     | https://tt-04-digital-card.vercel.app/graphql (Apollo Sandbox)         |
+| **Live API**     | https://tt-04-digital-card.vercel.app/ → redirects to `/graphql` (Sandbox) |
 | **Health**       | https://tt-04-digital-card.vercel.app/health                           |
 | **Repository**   | https://github.com/radomir-radionov/tt-04-pte.ltd                      |
 | **From zero**    | `docker compose up --build` → http://localhost:3000/graphql            |
