@@ -28,7 +28,9 @@ describe('Apollo Sandbox (e2e)', () => {
       return;
     }
 
-    const response = await request(app.getHttpServer()).get('/graphql');
+    const response = await request(app.getHttpServer())
+      .get('/graphql')
+      .set('Accept', 'text/html');
     expect(response.status).toBe(200);
     expect(response.text).toContain('graphql');
   });
