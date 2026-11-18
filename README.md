@@ -4,14 +4,14 @@ Backend digital visit card for **Radomir Radionov**: NestJS + TypeScript + Prism
 
 ## Architecture decisions
 
-| Topic | Choice | Why |
-|-------|--------|-----|
-| Layers | Resolver → Service → Repository → Prisma | Keeps GraphQL thin; business rules testable without HTTP |
-| API style | GraphQL code-first | Strong typing with NestJS decorators; schema generated to `src/schema.gql` |
-| Nested data | Request-scoped **DataLoader** on field resolvers | Batches related rows by `profileId`; avoids N+1 when the graph grows |
-| Bootstrap data | `DatabaseSeedService` on module init if DB empty | Satisfies “zero install → filled DB” for Docker and local |
-| Migrations | `prisma migrate deploy` in Docker entrypoint | Reproducible schema before app start |
-| Singleton profile | `slug = default` | One public card; easy to extend later with `profile(slug: String)` |
+| Topic             | Choice                                           | Why                                                                        |
+| ----------------- | ------------------------------------------------ | -------------------------------------------------------------------------- |
+| Layers            | Resolver → Service → Repository → Prisma         | Keeps GraphQL thin; business rules testable without HTTP                   |
+| API style         | GraphQL code-first                               | Strong typing with NestJS decorators; schema generated to `src/schema.gql` |
+| Nested data       | Request-scoped **DataLoader** on field resolvers | Batches related rows by `profileId`; avoids N+1 when the graph grows       |
+| Bootstrap data    | `DatabaseSeedService` on module init if DB empty | Satisfies “zero install → filled DB” for Docker and local                  |
+| Migrations        | `prisma migrate deploy` in Docker entrypoint     | Reproducible schema before app start                                       |
+| Singleton profile | `slug = default`                                 | One public card; easy to extend later with `profile(slug: String)`         |
 
 See [docs/architecture.md](docs/architecture.md) for more detail.
 
@@ -33,10 +33,22 @@ query {
   profile {
     name
     description
-    links { type url }
-    skills { name }
-    experience { company position achievements }
-    projects { name url }
+    links {
+      type
+      url
+    }
+    skills {
+      name
+    }
+    experience {
+      company
+      position
+      achievements
+    }
+    projects {
+      name
+      url
+    }
   }
 }
 ```
@@ -61,12 +73,10 @@ npm run test:e2e
 
 Unit tests run without a database; integration/e2e tests skip when `DATABASE_URL` is unset.
 
-## Deploy
-
-Any platform with Docker or Node 20 + PostgreSQL (Render, Railway, Fly.io):
+## Deploy (Docker)
 
 1. Provision Postgres and set `DATABASE_URL`.
-2. Build image from `Dockerfile` or run `npm run build` + `prisma migrate deploy`.
+2. Build from `Dockerfile` (`docker compose up --build`) or run `npm run build` + `prisma migrate deploy`.
 3. Expose port `3000` and open `/graphql`.
 
 ## Links
@@ -82,5 +92,3 @@ Any platform with Docker or Node 20 + PostgreSQL (Render, Railway, Fly.io):
 - **Dashboard:** https://vercel.com/radomirs-projects/tt-04-digital-card
 
 Postgres: Neon (Vercel integration `neon-blue-grass`). Migrations run at build time (`prisma migrate deploy`).
-
-Optional Render deploy: `RENDER_API_KEY=... npm run deploy:render` (see `render.yaml`).

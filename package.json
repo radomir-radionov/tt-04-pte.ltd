@@ -20,8 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
-    "prisma:seed": "prisma db seed",
-    "deploy:render": "node scripts/render-deploy.mjs"
+    "prisma:seed": "prisma db seed"
   },
   "prisma": {
     "seed": "ts-node --transpile-only prisma/seed.ts"
