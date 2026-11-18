@@ -9,7 +9,10 @@ export class PrismaMigrateService implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}
 
   async onModuleInit(): Promise<void> {
-    if (process.env.SKIP_PRISMA_MIGRATE === '1') {
+    if (
+      process.env.SKIP_PRISMA_MIGRATE === '1' ||
+      process.env.VERCEL === '1'
+    ) {
       return;
     }
 

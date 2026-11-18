@@ -75,12 +75,12 @@ Any platform with Docker or Node 20 + PostgreSQL (Render, Railway, Fly.io):
 - **Profile:** [GitHub @radomir-radionov](https://github.com/radomir-radionov)
 - **CV in repo:** `Radomir_CV_React.pdf`
 
-### Live API (Render)
+### Live API (Vercel)
 
-**Option A — one command (API key):**
+- **Production:** https://tt-04-digital-card.vercel.app/graphql (Apollo Sandbox)
+- **Health:** https://tt-04-digital-card.vercel.app/health
+- **Dashboard:** https://vercel.com/radomirs-projects/tt-04-digital-card
 
-1. [Create an API key](https://dashboard.render.com/u/settings#api-keys) (read/write).
-2. Run: `RENDER_API_KEY=rnd_xxx npm run deploy:render`
-3. Open the printed URL → `/graphql` (Apollo Sandbox).
+Postgres: Neon (Vercel integration `neon-blue-grass`). Migrations run at build time (`prisma migrate deploy`).
 
-**Option B — Blueprint UI:** [New Blueprint](https://dashboard.render.com/blueprints) → repo `tt-04-pte.ltd` → apply `render.yaml`.
+Optional Render deploy: `RENDER_API_KEY=... npm run deploy:render` (see `render.yaml`).
